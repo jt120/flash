@@ -1,0 +1,118 @@
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Flash</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/web/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/web/css/grid.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header">
+        <h1>Flash Upstream</h1>
+
+        <p class="lead">reverse proxy in java
+        </p>
+    </div>
+
+    <div class="row">
+        <h3>Useful</h3>
+
+        <div>
+            <button id="search" class="btn btn-default">show config</button>
+            &nbsp;&nbsp;
+            <button id="reload" class="btn btn-default">reload config</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <h3>change config</h3>
+
+        <div>
+            <form action="#" id="change_form" class="form-horizontal">
+                <div>
+                    <textarea class="form-control" rows="20" id="configContent" name="configContent"></textarea>
+                </div>
+            </form>
+
+            <p>
+                <button id="change_config" class="btn btn-default">submit</button>
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <h3>close proxy</h3>
+
+        <div>
+            <button id="closeBtn" class="btn btn-default">Close</button>
+        </div>
+    </div>
+
+</div>
+
+<script src="/web/js/jquery.min.js"></script>
+<script src="/web/js/jquery.autocomplete.min.js"></script>
+<script>
+    $(function () {
+
+        $.ajax({
+            url: "/config/show",
+            success: function (data) {
+                if (data.length != 0) {
+                    $("#configContent").val(JSON.stringify(data, null, 2));
+                }
+            }
+        });
+
+        $("#search").click(function () {
+            $.ajax({
+                url: "/config/show",
+                success: function (data) {
+                    alert(JSON.stringify(data, null, 2));
+                }
+            })
+        });
+
+        $("#reload").click(function () {
+            $.ajax({
+                url: "/config/reload",
+                success: function (data) {
+                    alert(JSON.stringify(data, null, 2));
+                }
+            })
+        });
+
+        $("#closeBtn").click(function () {
+            $.ajax({
+                url: "/config/close",
+                success: function (data) {
+                    alert(data);
+                }
+            })
+        });
+
+        $("#change_config").click(function () {
+            $.ajax({
+                url: "/config/change",
+                type: "post",
+                data: $("#configContent").val(),
+                contentType: "application/json",
+                success: function (data) {
+                    alert(JSON.stringify(data, null, 2))
+                }
+            });
+        });
+    })
+</script>
+</body>
+</html>
